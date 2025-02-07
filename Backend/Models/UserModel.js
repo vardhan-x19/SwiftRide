@@ -1,0 +1,49 @@
+const mongoose=require('mongoose');
+const bcrypt=require('bcrypt'); 
+const jwt=require('jsonwebtoken');
+
+
+ const userSchema=new mongoose.Schema({
+
+        fullname:{
+          firstName:{
+            type:String,
+            required:true,
+            minlength:[3,'first name must be atleast 3 characters long'],
+          },
+            lastname:{
+              type:String,
+              minlength:[3,'Last name must be atleast 3 characters long'],
+            }
+        },
+        email:{
+          type:String,
+          required:true,
+          unique:true,
+          minlength:[3,'email must be atleast 3 characters long'],
+        },
+        password:{
+          type:String,
+          requires:true,
+          select:false,
+        },
+        socketId:{
+          type:String,
+        }
+       
+})
+// instance method for only user Instance we must use methdods key word
+userSchema.methods.generateToken=function(){
+  const token=jwt.sign({_id:this._id},process.env.JWT_SECRET);
+}
+// static method for the whole model
+userSchema.statics.comparePassword=async function(password,hashPassword){
+  return await bcrypt.compare(password,hashPassword);
+}
+// this is for the whole model must use statics key word
+userSchema.statics.hashPassword=async function(password){
+  return await bcrypt.hash(password,10);
+}
+userModel=mongoose.model('user',userSchema);
+
+module.exports=userModel;
