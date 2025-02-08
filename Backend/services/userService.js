@@ -1,6 +1,7 @@
 const userModel=require('../Models/UserModel');
 
 module.exports.registerUser=async ({firstname,lastname,email,password})=>{
+  console.log({firstname,lastname,email,password});
   if(!firstname  || !email || !password){
     throw new Error('All fields are required');
   }

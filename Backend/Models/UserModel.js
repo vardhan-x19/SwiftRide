@@ -6,7 +6,7 @@ const jwt=require('jsonwebtoken');
  const userSchema=new mongoose.Schema({
 
         fullname:{
-          firstName:{
+          firstname:{
             type:String,
             required:true,
             minlength:[3,'first name must be atleast 3 characters long'],
@@ -35,6 +35,7 @@ const jwt=require('jsonwebtoken');
 // instance method for only user Instance we must use methdods key word
 userSchema.methods.generateToken=function(){
   const token=jwt.sign({_id:this._id},process.env.JWT_SECRET);
+  return token;
 }
 // static method for the whole model
 userSchema.statics.comparePassword=async function(password,hashPassword){
@@ -45,5 +46,6 @@ userSchema.statics.hashPassword=async function(password){
   return await bcrypt.hash(password,10);
 }
 userModel=mongoose.model('user',userSchema);
+
 
 module.exports=userModel;
