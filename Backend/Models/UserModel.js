@@ -38,8 +38,8 @@ userSchema.methods.generateToken=function(){
   return token;
 }
 // static method for the whole model
-userSchema.statics.comparePassword=async function(password,hashPassword){
-  return await bcrypt.compare(password,hashPassword);
+userSchema.methods.comparePassword=async function(password){
+  return await bcrypt.compare(password,this.password);
 }
 // this is for the whole model must use statics key word
 userSchema.statics.hashPassword=async function(password){
