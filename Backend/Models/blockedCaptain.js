@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const blockListTokenSchema = new mongoose.Schema({
+const blockedCaptainSchema = new mongoose.Schema({
   token: {
     type: String,
     required: true,
@@ -13,6 +13,6 @@ const blockListTokenSchema = new mongoose.Schema({
   }
 });
 
-const BlockListToken = mongoose.models.BlockListToken || mongoose.model('BlockListToken', blockListTokenSchema);
+const blockedCaptainList = mongoose.models.BlockedCaptain || mongoose.model('BlockedCaptain', blockedCaptainSchema);
 
-module.exports = BlockListToken;
+module.exports = blockedCaptainList;

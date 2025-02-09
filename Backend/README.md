@@ -217,3 +217,77 @@ This endpoint is used to register a new captain. It requires the captain's first
   }
 }
 ```
+
+# Captain Profile Endpoint Documentation
+
+## Endpoint: `/captains/profile`
+
+### Method: GET
+
+### Description:
+This endpoint is used to get the profile of the logged-in captain. It requires a valid authentication token.
+
+### Required Headers:
+- `Authorization` (string): The Bearer token for the authenticated captain.
+
+### Status Codes:
+- `200 OK`: Captain profile retrieved successfully. Returns a JSON object containing the captain details.
+- `401 Unauthorized`: Invalid or missing authentication token. Returns a JSON object containing the error message.
+
+### Example Request:
+```http
+GET /captains/profile HTTP/1.1
+Host: localhost:3000
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+### Example Response:
+```json
+{
+  "captain": {
+    "_id": "60d0fe4f5311236168a109ca",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "status": "active",
+    "vehicle": {
+      "color": "red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+# Captain Logout Endpoint Documentation
+
+## Endpoint: `/captains/logout`
+
+### Method: GET
+
+### Description:
+This endpoint is used to log out the captain. It requires a valid authentication token.
+
+### Required Headers:
+- `Authorization` (string): The Bearer token for the authenticated captain.
+
+### Status Codes:
+- `200 OK`: Captain logged out successfully. Returns a JSON object containing the success message.
+- `401 Unauthorized`: Invalid or missing authentication token. Returns a JSON object containing the error message.
+
+### Example Request:
+```http
+GET /captains/logout HTTP/1.1
+Host: localhost:3000
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+### Example Response:
+```json
+{
+  "message": "Logout successfully"
+}
+```
