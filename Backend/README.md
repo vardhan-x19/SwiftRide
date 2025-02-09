@@ -86,37 +86,32 @@ This endpoint is used to log in an existing user. It requires the user's email a
   }
 }
 ```
-# User Login Endpoint Documentation
+# User Profile Endpoint Documentation
 
-## Endpoint: `/users/login`
+## Endpoint: `/users/profile`
 
-### Method: POST
+### Method: GET
 
 ### Description:
-This endpoint is used to log in an existing user. It requires the user's email and password. The password will be compared with the hashed password stored in the database.
+This endpoint is used to get the profile of the logged-in user. It requires a valid authentication token.
 
-### Required Data:
-- `email` (string): The email address of the user. Must be a valid email format.
-- `password` (string): The password for the user account. Must be at least 8 characters long.
+### Required Headers:
+- `Authorization` (string): The Bearer token for the authenticated user.
 
 ### Status Codes:
-- `200 OK`: User logged in successfully. Returns a JSON object containing the user token and user details.
-- `400 Bad Request`: Validation error. Returns a JSON object containing the validation errors.
-- `401 Unauthorized`: Invalid email or password. Returns a JSON object containing the error message.
-- `500 Internal Server Error`: Server error. Returns a JSON object containing the error message.
+- `200 OK`: User profile retrieved successfully. Returns a JSON object containing the user details.
+- `401 Unauthorized`: Invalid or missing authentication token. Returns a JSON object containing the error message.
 
 ### Example Request:
-```json
-{
-  "email": "john.doe@example.com",
-  "password": "password123"
-}
+```http
+GET /users/profile HTTP/1.1
+Host: localhost:3000
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 ### Example Response:
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "user": {
     "_id": "60d0fe4f5311236168a109ca",
     "fullname": {
@@ -125,5 +120,35 @@ This endpoint is used to log in an existing user. It requires the user's email a
     },
     "email": "john.doe@example.com"
   }
+}
+```
+
+# User Logout Endpoint Documentation
+
+## Endpoint: `/users/logout`
+
+### Method: GET
+
+### Description:
+This endpoint is used to log out the user. It requires a valid authentication token.
+
+### Required Headers:
+- `Authorization` (string): The Bearer token for the authenticated user.
+
+### Status Codes:
+- `200 OK`: User logged out successfully. Returns a JSON object containing the success message.
+- `401 Unauthorized`: Invalid or missing authentication token. Returns a JSON object containing the error message.
+
+### Example Request:
+```http
+GET /users/logout HTTP/1.1
+Host: localhost:3000
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+### Example Response:
+```json
+{
+  "message": "logged out successfully"
 }
 ```
