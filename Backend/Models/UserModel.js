@@ -34,7 +34,11 @@ const jwt=require('jsonwebtoken');
 })
 // instance method for only user Instance we must use methdods key word
 userSchema.methods.generateToken=function(){
-  const token=jwt.sign({_id:this._id},process.env.JWT_SECRET);
+  const token = jwt.sign(
+    { _id: this._id },
+    process.env.JWT_SECRET,
+    { expiresIn: '24h' }
+  );
   return token;
 }
 // static method for the whole model

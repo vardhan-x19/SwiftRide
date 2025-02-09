@@ -1,6 +1,7 @@
 const dotenv=require('dotenv');
 const dbConnection=require('./db/db');
 const UserRouter=require('./routes/user.routes');
+const cookieParser=require('cookie-parser');
 const express=require('express');
 const cors=require('cors');
 const morgan=require('morgan');
@@ -9,6 +10,7 @@ const app=express();
 
 dotenv.config();
 dbConnection();
+app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(cors());//only thise domian can aceess the api 
 app.use(express.json());
