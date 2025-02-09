@@ -152,3 +152,68 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   "message": "logged out successfully"
 }
 ```
+# Captain Registration Endpoint Documentation
+
+## Endpoint: `/captains/register`
+
+### Method: POST
+
+### Description:
+This endpoint is used to register a new captain. It requires the captain's first name, last name, email, password, status, and vehicle details. The password will be hashed before storing it in the database.
+
+### Required Data:
+- `fullname.firstname` (string): The first name of the captain. Must be at least 3 characters long.
+- `fullname.lastname` (string): The last name of the captain. Must be at least 3 characters long.
+- `email` (string): The email address of the captain. Must be a valid email format.
+- `password` (string): The password for the captain's account. Must be at least 8 characters long.
+- `status` (string): The status of the captain. Must be either 'active' or 'inactive'.
+- `vehicle.color` (string): The color of the vehicle. Must be at least 3 characters long.
+- `vehicle.plate` (string): The plate number of the vehicle. Must be at least 3 characters long.
+- `vehicle.capacity` (number): The capacity of the vehicle. Must be a number.
+- `vehicle.vehicleType` (string): The type of the vehicle. Must be either 'car', 'motorcycle', or 'auto'.
+
+### Status Codes:
+- `200 OK`: Captain registered successfully. Returns a JSON object containing the captain token and captain details.
+- `400 Bad Request`: Validation error. Returns a JSON object containing the validation errors.
+- `500 Internal Server Error`: Server error. Returns a JSON object containing the error message.
+
+### Example Request:
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "status": "active",
+  "vehicle": {
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Example Response:
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "_id": "60d0fe4f5311236168a109ca",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "status": "active",
+    "vehicle": {
+      "color": "red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
