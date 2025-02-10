@@ -17,12 +17,12 @@ module.exports.registerUser=async (req,res,next)=>{
     }
 
     const {fullname,email,password}=req.body;
-    console.log('fulname',fullname);
+   
     const hashPassword=await userModel.hashPassword(password);
 
     const firstname=fullname.firstname;
     const lastname=fullname.lastname;
-    console.log('firstname',firstname,'lastname',lastname);
+   
 
     const user= await userService.registerUser({firstname,
       lastname,
@@ -30,15 +30,15 @@ module.exports.registerUser=async (req,res,next)=>{
       password:hashPassword
     }
     );
-
+    //instance method to generate token
     const token= user.generateToken();
-    console.log("token", token)
+    // console.log("token", token)
     res.status(200).json({token,user});
-    
 }
 
 //login user function
 module.exports.loginUser=async(req,res,next)=>{
+
   const err=validationResult(req);
 
   if(!err){
@@ -58,6 +58,7 @@ module.exports.loginUser=async(req,res,next)=>{
     return res.status(401).res.json({message:'Invalid email or password'});
   }
   const token=user.generateToken();
+  //setting token in cookie
   res.cookie('token',token);
   res.status(200).json({token,user});
 }
