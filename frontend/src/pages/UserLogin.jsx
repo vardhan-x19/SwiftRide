@@ -1,20 +1,39 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
 import { useRef } from 'react'
 import { useState } from 'react'
+
+import axios from 'axios'
 const UserLogin = () => {
-  const [data, setdata] = useState({})
+  
+  const navigate=useNavigate();
   const  email = useRef('');
   const password = useRef('');
-  const submitHandler = (e) => {
+
+  const submitHandler = async (e) => {
     e.preventDefault();
     const enteredEmail = email.current.value;
     const enteredPassword = password.current.value;
-    // console.log(enteredEmail, enteredPassword);
-    setdata({
-      email: enteredEmail,
-      password: enteredPassword})
-      console.log(data)
+    const inputData={
+      email:enteredEmail,
+      password:enteredPassword
+    }
+    // const navigate=useNavigate();
+    // const token =localStorage.getItem('token');
+    // if(token){
+    //    navigate('/home');
+    // }
+    try {
+      console.log(inputData)
+      const response= await axios.post(`http://localhost:4000/users/login`,inputData);
+      console.log(response);
+      navigate('/home');
+    } catch (error) {
+      console.log(error);
+    }
+  
+      email.current.value="";
+      password.current.value="";
   };
   return (
     <div className=' h-screen relative w-full '>

@@ -38,7 +38,7 @@ const CaptainLogin = () => {
               className='w-full mt-3  bg-black text-white p-3 mb-4 rounded-md'
               type='submit'  >Login</button>
             </form>
-            <p className='text-black'>Dont'have an account <Link className='text-blue-600' to={'/usersignup'} >Create an account</Link></p>
+            <p className='text-black'>Dont'have an account <Link className='text-blue-600' to={'/captainsignup'} >Create an account</Link></p>
         </div>
     </div>
     <div className='p-7 absolute bottom-0 w-full'>

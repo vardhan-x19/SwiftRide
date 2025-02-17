@@ -8,7 +8,6 @@ const cors=require('cors');
 const morgan=require('morgan');
 const app=express();  
 
-
 dotenv.config();
 dbConnection();
 app.use(cookieParser());

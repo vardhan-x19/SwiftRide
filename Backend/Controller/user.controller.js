@@ -46,6 +46,7 @@ module.exports.loginUser=async(req,res,next)=>{
   }
 
   const {email,password}=req.body;
+  // console.log(email,password)
   //because we put password as not selected in the schema we have to select it here
   const user=await userModel.findOne({email:email}).select('+password');
   if(!user){
