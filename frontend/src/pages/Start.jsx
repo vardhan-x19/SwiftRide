@@ -7,7 +7,7 @@ const Start = () => {
      <div class="h-screen relative  w-screen bg-[url('/swiftRIDE1.jpg')] bg-cover bg-center">
 
       <div className='bg-white  mb-5  absolute bottom-0 w-full'>
-        <Link to={'/UserLogin'}  className='border-2 w-full bg-black text-white font-semibold flex justify-center items-center border-black p-2 rounded-md'>
+        <Link to={'/home'}  className='border-2 w-full bg-black text-white font-semibold flex justify-center items-center border-black p-2 rounded-md'>
           Get Started With SwiftRide
           <span className='ml-3 text-white '><GrLinkNext /></span>
         </Link>

@@ -24,9 +24,10 @@ const UserLogin = () => {
     //    navigate('/home');
     // }
     try {
-      console.log(inputData)
+      
       const response= await axios.post(`http://localhost:4000/users/login`,inputData);
-      console.log(response);
+      console.log('responsedata',response.data);
+      localStorage.setItem('token',response.data.token)
       navigate('/home');
     } catch (error) {
       console.log(error);

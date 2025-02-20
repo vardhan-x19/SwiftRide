@@ -7,7 +7,7 @@ module.exports.registerUser=async (req,res,next)=>{
 
     const errors=validationResult(req);
 
-    if(!errors){
+    if(errors){
       return res.status(400).json({errors:errors.array()});
     }
     
@@ -41,7 +41,7 @@ module.exports.loginUser=async(req,res,next)=>{
 
   const err=validationResult(req);
 
-  if(!err){
+  if(!err.isEmpty()){
     return res.status(400).json({errors:err.array()});
   }
 
@@ -73,10 +73,9 @@ module.exports.getProfile=async(req,res,next)=>{
 //logout function
 
 module.exports.logoutUser=async(req,res,next)=>{
-  res.clearCookie('token');
-
   const token=req.cookies.token || req.headers.authorization?.split(' ')[1];
-
+  res.clearCookie('token');
+  console.log(token)
   if(!token){
     return res.status(401).json({message:"Unauthorized"});
   }

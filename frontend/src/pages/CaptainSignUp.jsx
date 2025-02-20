@@ -1,11 +1,17 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 const CaptainSignUp = () => {
-  const [data, setData] = useState({})
+  // const [data, setData] = useState({})
     const email = useRef('')
     const password = useRef('')
     const firstname = useRef('')
     const lastname = useRef('')
+
+    const vehicleColor = useRef('')
+    const vehiclePlate = useRef('')
+    const vehicleCapacity = useRef('')
+    const vehicleType = useRef('')
   
     const submitHandler = (e) => {
       e.preventDefault()
@@ -14,16 +20,28 @@ const CaptainSignUp = () => {
       const enteredFirstname = firstname.current.value
       const enteredLastname = lastname.current.value
   
-      setData({
+      const inputData={
         email: enteredEmail,
         password: enteredPassword,
         firstname: enteredFirstname,
-        lastname: enteredLastname
-      })
+        lastname: enteredLastname,
+        vehicle:{
+          color:       vehicleColor.current.value,
+          plate:       vehiclePlate.current.value,
+          capacity:    vehicleCapacity.current.value,
+          vehicleType: vehicleType.current.value,
+        }
+      }
+      console.log(inputData);
+
       email.current.value="";
       password.current.value="";
       firstname.current.value="";
       lastname.current.value="";
+      vehicleColor.current.value="",
+      vehiclePlate.current.value="",
+      vehicleCapacity.current.value="",
+      vehicleType.current.value=""
     }
   
   return (
@@ -38,7 +56,7 @@ const CaptainSignUp = () => {
             </label>
             <div className='flex gap-3'>
               <input
-                className='w-full border-none outline-none bg-pink-100 p-3 rounded-md'
+                className='w-full border-none outline-none bg-pink-100 p-2 rounded-md'
                 type='text'
                 placeholder='FirstName'
                 name='firstname'
@@ -68,6 +86,7 @@ const CaptainSignUp = () => {
               id='userMail'
               ref={email}
               required
+              placeholder='username@gmail.com'
             />
           </div>
           <div className='mt-2 w-full'>
@@ -81,29 +100,86 @@ const CaptainSignUp = () => {
               id='password'
               ref={password}
               required
+              placeholder='min 4 digits'
             />
           </div>
+          <h5>Enter vehicle details:</h5>
+          <div className='flex gap-2'>
+          
+          <div className='mt-2 w-full'>
+            
+            <input
+              className='w-full border-none outline-none bg-pink-100 p-3 rounded-md'
+              type='text'
+              name='vehicleColor'
+              id='vehicleColor'
+              ref={vehicleColor}
+              placeholder='color'
+              required
+            />
+          </div>
+          <div className='mt-2 w-full'>
+            <input
+              className='w-full border-none outline-none bg-pink-100 p-3 rounded-md'
+              type='number'
+              name='vehiclePlate'
+              id='vehiclePlate'
+              ref={vehiclePlate}
+              required
+              placeholder='plateNumber'
+            />
+          </div>
+          </div>
+         <div className='flex gap-2'>
+         <div className='mt-2 w-full'>
+            <input
+              className='w-full border-none outline-none bg-pink-100 p-3 rounded-md'
+              type='number'
+              name='vehicleCapacity'
+              id='vehicleCapacity'
+              ref={vehicleCapacity}
+              placeholder='capacity'
+              required
+            />
+          </div>
+          <div className='mt-2 w-full'>
+            <select
+              className='w-full border-none outline-none bg-pink-100 p-3 rounded-md'
+              name='vehicleType'
+              id='vehicleType'
+              ref={vehicleType}
+              required
+            >
+              <option value=''>Select vehicle type</option>
+              <option value='car'>Car</option>
+              <option value='motorcycle'>Motorcycle</option>
+              <option value='auto'>Auto</option>
+            </select>
+          </div>
+         </div>
+          
           <button
             className='w-full mt-3 bg-black text-white p-3 mb-4 rounded-md'
             type='submit'
           >
-            Login
+            Create account
           </button>
         </form>
         <p className='text-black'>
           Alredy have an account ?{' '}
-          <Link className='text-blue-600' to={'/userLogin'}>
+          <Link className='text-blue-600' to={'/captainlogin'}>
            Login
           </Link>
         </p>
       </div>
     </div>
+
     <div className='p-7 absolute bottom-0 w-full'>
       <Link
         to={'/captainlogin'}
-        className='flex justify-center font-bold w-full mt-3 bg-red-400 text-white p-3 mb-4 rounded-md'
+        className='flex justify-center font-bold w-full mt-3 bg-red-400 text-white p-2  rounded-md'
       >
-        SignUp as a Captain
+        SignUp as a user
       </Link>
     </div>
   </div>

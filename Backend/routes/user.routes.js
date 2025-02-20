@@ -11,7 +11,7 @@ router.post('/register',[
 
 router.post('/login',
   [body('email').isEmail().withMessage('Invalid email'),
-  body('password').isLength({min:5}).withMessage('Password must be atleast 8 characters long')],
+  body('password').isLength({min:4}).withMessage('Password must be atleast 4 characters long')],
   userController.loginUser)
 
   router.get('/profile',authMiddleware.authUser,userController.getProfile); 
