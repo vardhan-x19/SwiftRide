@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 const CaptainSignUp = () => {
   // const [data, setData] = useState({})
     const email = useRef('')
@@ -12,7 +13,8 @@ const CaptainSignUp = () => {
     const vehiclePlate = useRef('')
     const vehicleCapacity = useRef('')
     const vehicleType = useRef('')
-  
+    
+    const navigate=useNavigate();
     const submitHandler = (e) => {
       e.preventDefault()
       const enteredEmail = email.current.value
@@ -21,10 +23,13 @@ const CaptainSignUp = () => {
       const enteredLastname = lastname.current.value
   
       const inputData={
+        fullname:{
+          firstname: enteredFirstname,
+          lastname: enteredLastname,
+        },
         email: enteredEmail,
         password: enteredPassword,
-        firstname: enteredFirstname,
-        lastname: enteredLastname,
+        status: "active",
         vehicle:{
           color:       vehicleColor.current.value,
           plate:       vehiclePlate.current.value,
@@ -33,6 +38,14 @@ const CaptainSignUp = () => {
         }
       }
       console.log(inputData);
+
+      axios.post(`http://localhost:4000/captains/register`,inputData).then((response)=>{
+        console.log(response.data);
+        localStorage.setItem('captain-token',response.data.token);
+        navigate('/captain-home');  
+      }).catch((err)=>{
+        console.log(err);
+      })
 
       email.current.value="";
       password.current.value="";

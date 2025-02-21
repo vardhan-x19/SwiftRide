@@ -1,21 +1,33 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useRef } from 'react'
-import { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 const CaptainLogin = () => {
-   const [data, setdata] = useState({})
+  
     const  email = useRef('');
     const password = useRef('');
+    const navigate=useNavigate();
     const submitHandler = (e) => {
       e.preventDefault();
       const enteredEmail = email.current.value;
       const enteredPassword = password.current.value;
       // console.log(enteredEmail, enteredPassword);
-      setdata({
+      const inputData={
         email: enteredEmail,
-        password: enteredPassword})
-        console.log(data)
+        password: enteredPassword
+      }
+      console.log(inputData)
+      axios.post(`http://localhost:4000/captains/login`,inputData).then((response)=>{
+        console.log(response.data);
+        localStorage.setItem('captain-token',response.data.token)
+        navigate('/captain-home');
+      }).catch((err)=>{
+        console.log(err)
+      })
     };
+
+
   return (
     <div className=' h-screen relative w-full '>
     <div className='w-full flex flex-col gap-6 h-full p-7'>

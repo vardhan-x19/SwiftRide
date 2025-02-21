@@ -58,6 +58,7 @@ module.exports.loginUser=async(req,res,next)=>{
     //400 is client error bad request
     return res.status(401).res.json({message:'Invalid email or password'});
   }
+  
   const token=user.generateToken();
   //setting token in cookie
   res.cookie('token',token);
