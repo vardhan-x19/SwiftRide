@@ -6,6 +6,7 @@ import { RiMoneyRupeeCircleFill } from "react-icons/ri";
 const CaptainWaiting = ({setcapWait}) => {
   return (
    <div className='w-screen relative mt-6  '>
+       <h1 className='font-bold text-2xl mb-4 text-red-400 ml-2'>Waiting For Captain</h1>
              <span
               className='absolute top-0 right-10 text-2xl cursor-pointer'><FaAngleUp /></span>
               <div className=' h-24 '>
