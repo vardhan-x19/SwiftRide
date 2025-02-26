@@ -5,35 +5,24 @@ import { useGSAP } from '@gsap/react'
 import { FaAngleUp } from "react-icons/fa";
 import SearchPanel from '../Components/SearchPanel';
 import gsap from 'gsap';
-import VehiclePanel from '../Components/VehiclePanel';
-import ConfirmRide from '../Components/ConfirmRide';
-import CaptainWaiting from '../Components/CaptainWaiting';
+
 const Home = () => {
   const userData = useSelector(store => store.logInUser.user);
   const navigate = useNavigate();
-
+  const logout = () => {
+    navigate('/user/logout')
+  }
   const [pick, setPick] = useState('');
   const [drop, setDrop] = useState('');
   const [panel, setPanel] = useState(false);
   const panelRef = useRef(null);
-  const vehiclePanelRef=useRef(null);
-  const [vehiclePanel, setvehiclePanel] = useState(false);
-  const rideRef=useRef(null);
-  const [ridePanel, setRidePanel] = useState(false)
-  const capWaitRef=useRef(null);
-  const [capWait, setcapWait] = useState(false)
 
-  const logout = () => {
-    navigate('/user/logout')
-  }
-  
   const submitHandler = (e) => {
     e.preventDefault();
     console.log(pick, drop);
   }
 
   useGSAP(() => {
-    console.log('clcke')
     if (panel) {
       gsap.to(panelRef.current, {
         height: '70%',
@@ -42,50 +31,11 @@ const Home = () => {
     } else {
       gsap.to(panelRef.current, {
         height: '0%',
-        opacity: 1
-      })
-    }
-    
-    if(capWait){
-      gsap.to(capWaitRef.current, {
-        height: '75%',
-        opacity: 1
-      })
-      
-    }else{
-      gsap.to(capWaitRef.current, {
-        height: '0%',
-        opacity: 1
-      })
-    }
-  }, [panel,capWait])
-  useGSAP(() => {
-    if(ridePanel){
-      gsap.to(rideRef.current, {
-        height: '85%',
-        opacity: 1
-      })
-      
-    }else{
-      gsap.to(rideRef.current, {
-        height: '0%',
         opacity: 0
       })
     }
-  },[ridePanel])
-  useGSAP(() => {
-    if(vehiclePanel){
-      gsap.to(vehiclePanelRef.current, {
-        height: '70%',
-        opacity: 1
-      })
-    }else{
-      gsap.to(vehiclePanelRef.current, {
-        height: '0%',
-        opacity: 1
-      })
-    }
-  },[vehiclePanel])
+  }, [panel])
+
   return (
     <div className='h-screen overflow-hidden'>
       {/* image */}
@@ -124,17 +74,8 @@ const Home = () => {
           </form>
         </div>
         <div ref={panelRef} className='p-5 bg-white overflow-hidden'>
-          <SearchPanel setvehiclePanel={setvehiclePanel} setPanel={setPanel} />
+          <SearchPanel />
         </div>
-      </div>
-      <div ref={vehiclePanelRef}  className='p-5 h-0 fixed z-10 bottom-0 bg-white overflow-hidden' >
-            <VehiclePanel setRidePanel={setRidePanel} setvehiclePanel= {setvehiclePanel}></VehiclePanel>
-      </div>
-      <div ref={rideRef} className='p-5 h-0 fixed z-10 bottom-0 bg-white overflow-hidden' >
-            <ConfirmRide setcapWait={setcapWait} setRidePanel={setRidePanel} ></ConfirmRide>
-      </div>
-      <div ref={capWaitRef}  className='p-5 h-0  fixed z-10  bottom-0 bg-white overflow-hidden' >
-            <CaptainWaiting setRidePanel={setRidePanel} setcapWait={setcapWait} ></CaptainWaiting>
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import CaptainDetails from '../Components/CaptainDetails'
@@ -10,10 +10,17 @@ import ConfirmRidePopUp from '../Components/ConfirmRidePopUp'
 
 const CaptainHome = () => {
   const navigate=useNavigate();
-  const [ridePopupPanel, setRidePopupPanel] = useState(true)
+  const [ridePopupPanel, setRidePopupPanel] = useState(false)
   const ridePopupPanelRef=useRef(null);
   const [ConfirmRidePopupPanel, setConfirmRidePopupPanel] = useState(false)
   const confirmPopUpRideRef=useRef(null);
+
+  useEffect(() => {
+    setTimeout(()=>{
+        setRidePopupPanel(true);
+    },4000)
+  }, [])
+  
 
   useGSAP(function () {
     if (ridePopupPanel) {
