@@ -8,7 +8,7 @@ const cors=require('cors');
 const morgan=require('morgan');
 const app=express();  
 const mapsRoutes = require('./routes/maps.routes');
-
+const rideRoutes=require('./routes/ride.routes');
 dotenv.config();
 dbConnection();
 app.use(cookieParser());
@@ -23,5 +23,6 @@ app.get('/',(req,res)=>{
 app.use('/captains',CaptainRouter);
 app.use('/users',UserRouter);
 app.use('/maps', mapsRoutes);
+app.use('/ride',rideRoutes);
 
 module.exports= app;
