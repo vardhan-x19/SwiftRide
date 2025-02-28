@@ -13,7 +13,7 @@ router.post('/get-distance', [
 ],authMiddleware.authUser, mapsController.getDistance);
 
 router.post('/suggestion', [
-  query('input').isLength({ min: 1 }).withMessage('Input must not be empty')
+  query('input').isString().isLength({ min: 1 }).withMessage('Input must not be empty and must be a string')
 ], authMiddleware.authUser, mapsController.getSuggestion);
 
 module.exports = router;

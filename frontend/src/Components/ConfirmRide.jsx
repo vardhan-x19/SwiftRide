@@ -3,7 +3,7 @@ import { FaAngleUp } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import { FaLocationDot } from "react-icons/fa6";
 import { RiMoneyRupeeCircleFill } from "react-icons/ri";
-const ConfirmRide = ({setRidePanel,setcapWait}) => {
+const ConfirmRide = ({setRidePanel,setCapWait}) => {
   return (
     <div className='w-screen h-screen relative mt-6  '>
           <span
@@ -31,7 +31,7 @@ const ConfirmRide = ({setRidePanel,setcapWait}) => {
            onClick={()=>{
             console.log("clicked on confirm")
             setRidePanel(false)
-            setcapWait(true)
+            setCapWait(true)
            }}
             className='p-4 w-[90%]   mx-auto bg-red-500 mt-3 rounded-md text-white font-bold'>Confirm Booking</button>
     </div>

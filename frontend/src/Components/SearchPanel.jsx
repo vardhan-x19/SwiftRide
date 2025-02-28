@@ -1,30 +1,22 @@
 import React from 'react'
 import { FaLocationDot } from "react-icons/fa6"
-const SearchPanel = ({setPanel,setvehiclePanel}) => {
+import axios from 'axios'
+
+const SearchPanel = ({setPanel,setVehiclePanel,suggestion,setPick}) => {
+  
   return (
-    <div className='mt-5  w-screen overflow-hidden'>
-      <div onClick={()=>{
-        console.log('setpanel')
-        setvehiclePanel(true)
-        setPanel(false);
-      }} className='flex gap-2 relative  shadow-md p-3 w-full'>
-        <span className='mt-3'><FaLocationDot /></span>
-        <h3 className='font-medium'>25B,tkr college of engineering and technology,meerpet,hyderabad</h3>
-      </div>
-      <div className='flex gap-2 mt-2 relative shadow-md p-3 w-full'>
-        <span className='mt-3'><FaLocationDot /></span>
-        <h3 className='font-medium'>25B,tkr college of engineering and technology,meerpet,hyderabad</h3>
-      </div>
-      <div className='flex gap-2 mt-2 relative shadow-md p-3 w-full'>
-        <span className='mt-3'><FaLocationDot /></span>
-        <h3 className='font-medium'>25B,tkr college of engineering and technology,meerpet,hyderabad</h3>
-      </div>
-      <div className='flex gap-2 mt-2 relative shadow-md p-3 w-full'>
-        <span className='mt-3'><FaLocationDot /></span>
-        <h3 className='font-medium'>25B,tkr college of engineering and technology,meerpet,hyderabad</h3>
-      </div>
-      
+  <div className='mt-5  w-screen overflow-hidden'>
+    {suggestion.map((item) => (
+    <div key={item.place_id} onClick={() => {
+      setPick(item.description);
+      // setVehiclePanel(true)
+      // setPanel(false);
+    }} className='flex w-[90%] gap-2 mb-2 border border-gray-300 h-16 overflow-hidden relative shadow-sm p-3 '>
+      <span className='mt-3'><FaLocationDot /></span>
+      <h3 className='font-medium'>{item.description}</h3>
     </div>
+    ))}
+  </div>
   )
 }
 
