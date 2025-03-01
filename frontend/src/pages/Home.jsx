@@ -9,8 +9,13 @@ import VehiclePanel from '../Components/VehiclePanel';
 import ConfirmRide from '../Components/ConfirmRide';
 import CaptainWaiting from '../Components/CaptainWaiting';
 import axios from 'axios'
-
+import { useDispatch } from 'react-redux'
+import { setDropINput } from '../store/map';
+import { setPickInput } from '../store/map';
 const Home = () => {
+
+  const dispatch=useDispatch();
+
   const userData = useSelector(store => store.logInUser.user);
   const navigate = useNavigate();
   const pickRef=useRef(null);
@@ -25,8 +30,15 @@ const Home = () => {
   const capWaitRef = useRef(null);
   const [capWait, setCapWait] = useState(false)
   const [suggestion, setSuggestion] = useState([])
-  const setPickUpSuggestions = async (inputValue) => {
-    console.log("val", inputValue);
+  const [fareData, setfareData] = useState({})
+
+  const setPickUpSuggestions = async (inputValue,type) => {
+    if(type=="pick"){
+      dispatch(setPickInput());
+    }else{
+      dispatch(setDropINput());
+    }
+    // console.log("val", inputValue);
     const token = localStorage.getItem('token');
     if (!token) {
       console.error("No token found");
@@ -43,6 +55,33 @@ const Home = () => {
       setSuggestion(suggestions.data);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
+    }
+  }
+
+  const SetRideHandler = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
+  
+    try {
+      const response = await axios.get(`http://localhost:4000/ride/fare`, {
+        params: {
+          origin: pick,
+          destination: drop
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setfareData(response.data.fare);
+      console.log(response.data.fare)
+      // console.log('setfare', fare);
+      setVehiclePanel(true);
+      setPanel(false);
+    } catch (error) {
+      console.error("Error fetching fare:", error);
     }
   }
 
@@ -118,7 +157,7 @@ const Home = () => {
         <img className='w-screen h-screen object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
       </div>
       <div className='h-screen w-screen flex flex-col justify-end absolute bottom-0'>
-        <div className='p-5 h-[30%] bg-white rounded-md relative'>
+        <div className='p-5 h-[35%] bg-white rounded-md relative'>
           <span
             onClick={() => {
               setPanel(!panel)
@@ -134,9 +173,9 @@ const Home = () => {
                 setPanel(true)
               }}
               onChange={(e) => {
-                console.log(e.target.value)
+                // console.log(e.target.value)
                 setPick(e.target.value)
-                setPickUpSuggestions(pick);
+                setPickUpSuggestions(pick,"pick");
               }}
               className='border font-semibold  border-black p-2' type="text" placeholder='Add a pickup location' />
             <input
@@ -146,17 +185,20 @@ const Home = () => {
               }}
               onChange={(e) => {
                 setDrop(e.target.value)
-                setPickUpSuggestions(drop);
+                setPickUpSuggestions(drop,"drop");
               }}
               className='border border-black p-2' type='text' placeholder="Enter your destination" />
           </form>
+          <button
+          onClick={SetRideHandler}
+           className='w-full p-2 bg-slate-950 text-white rounded-md text-bold text-2xl'>FindTrip</button>
         </div>
         <div ref={panelRef} className='p-5 bg-white overflow-hidden'>
-          <SearchPanel suggestion={suggestion} setPick={setPick}  setVehiclePanel={setVehiclePanel} setPanel={setPanel} />
+          <SearchPanel setDrop={setDrop} suggestion={suggestion} setPick={setPick}  setVehiclePanel={setVehiclePanel} setPanel={setPanel} />
         </div>
       </div>
       <div ref={vehiclePanelRef} className='p-5 h-0 fixed z-10 bottom-0 bg-white overflow-hidden' >
-        <VehiclePanel setRidePanel={setRidePanel} setVehiclePanel={setVehiclePanel}></VehiclePanel>
+        <VehiclePanel fareData={fareData}  setRidePanel={setRidePanel} setVehiclePanel={setVehiclePanel}></VehiclePanel>
       </div>
       <div ref={rideRef} className='p-5 h-0 fixed z-10 bottom-0 bg-white overflow-hidden' >
         <ConfirmRide setCapWait={setCapWait} setRidePanel={setRidePanel} ></ConfirmRide>

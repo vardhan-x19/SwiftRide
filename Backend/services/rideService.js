@@ -12,9 +12,9 @@ const getOtp = (num) => {
   return otp;
 }
 
-const getFare = async ({ origin, destination, vehicleType }) => {
-  if (!origin || !destination || !vehicleType) {
-    throw new Error('All fields are required');
+const getFare = async ({ origin, destination }) => {
+  if (!origin || !destination) {
+    throw new Error('Origin and destination are required');
   }
 
   const { distance, duration } = await mapsService.getDistance(origin, destination);
@@ -22,19 +22,17 @@ const getFare = async ({ origin, destination, vehicleType }) => {
   const distanceValue = parseFloat(distance.replace(/[^0-9.]/g, ''));
   const durationValue = parseFloat(duration.replace(/[^0-9.]/g, ''));
 
-  let fare;
-  if (vehicleType === 'motorcycle') {
-    fare = distanceValue * 5; // Example fare calculation for motorcycle
-  } else if (vehicleType === 'auto') {
-    fare = distanceValue * 10; // Example fare calculation for auto
-  } else if (vehicleType === 'car') {
-    fare = distanceValue * 15; // Example fare calculation for car
-  } else {
-    throw new Error('Invalid vehicle type');
-  }
+  const fares = {
+    motorcycle: distanceValue * 5, // Example fare calculation for motorcycle
+    auto: distanceValue * 10, // Example fare calculation for auto
+    car: distanceValue * 15 ,// Example fare calculation for car
+    duration:duration
+  };
 
-  return Number(fare);
+  return fares;
 }
+
+module.exports.getFare = getFare;
 
 module.exports.createRide = async ({ userId, origin, destination, vehicleType }) => {
   // console.log('in ride service', { userId, origin, destination, vehicleType });
@@ -43,7 +41,7 @@ module.exports.createRide = async ({ userId, origin, destination, vehicleType })
   }
 
   try {
-    const fare = await getFare({ origin, destination, vehicleType });
+    const fare = await getFare({ origin, destination });
     // console.log('Fare type:', typeof fare);
    
     // console.log('fare', fare);
@@ -51,9 +49,10 @@ module.exports.createRide = async ({ userId, origin, destination, vehicleType })
       user: userId,
       origin,
       destination,
-      otp:getOtp(4),
-      fare,
+      otp: getOtp(4),
+      fare: fare[vehicleType],
       status: 'pending', // Example status
+      vehicleType
     });
     // console.log('ride', ride);
     return ride;
