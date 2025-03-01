@@ -3,13 +3,14 @@ import { FaLocationDot } from "react-icons/fa6"
 import { FaUser } from "react-icons/fa";
 import { useState } from 'react';
 import { FaAngleUp } from "react-icons/fa";
-const VehiclePanel = ({setVehiclePanel,setRidePanel,fareData}) => {
+const VehiclePanel = ({setVehiclePanel,setRidePanel,fareData,setvehicleType}) => {
   const  [data, setdata] = useState(2)
   return (
     <div className='mt-3 w-screen flex flex-col items-start relative  overflow-hidden'>
       <span
       onClick={()=>{
         setVehiclePanel(false)
+        
       }}
        className='absolute text-2xl top-1 right-8'><FaAngleUp /></span>
       <h2 className='font-bold text-2xl'>Choose Vehicle</h2>
@@ -17,6 +18,7 @@ const VehiclePanel = ({setVehiclePanel,setRidePanel,fareData}) => {
        onClick={()=>{
         setRidePanel(true)
         setVehiclePanel(false)
+        setvehicleType('auto')
       }}
        className=' w-[90%] p-3 mt-3 border border-gray-500 rounded-md'>
             <div className='flex gap-2 relative  w-full'>
@@ -32,6 +34,8 @@ const VehiclePanel = ({setVehiclePanel,setRidePanel,fareData}) => {
       <div
        onClick={()=>{
         setVehiclePanel(false)
+        setRidePanel(true)
+        setvehicleType("motorcycle");
       }}
        className=' w-[90%] p-3 mt-3 border border-gray-500 rounded-md'>
             <div className='flex gap-2 relative   w-full'>
@@ -47,6 +51,8 @@ const VehiclePanel = ({setVehiclePanel,setRidePanel,fareData}) => {
       <div 
        onClick={()=>{
         setVehiclePanel(false)
+        setRidePanel(true)
+        setvehicleType("car");
       }} className=' w-[90%] p-3 mt-3 border border-gray-500 rounded-md'>
             <div className='flex gap-2 relative   w-full'>
               <img className='w-20 h-14 ' src="https://static.vecteezy.com/system/resources/previews/029/913/283/non_2x/white-city-car-isolated-on-transparent-background-3d-rendering-illustration-free-png.png" alt="auto" />

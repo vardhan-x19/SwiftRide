@@ -31,6 +31,7 @@ const Home = () => {
   const [capWait, setCapWait] = useState(false)
   const [suggestion, setSuggestion] = useState([])
   const [fareData, setfareData] = useState({})
+  const [vehicleType, setvehicleType] = useState('')
 
   const setPickUpSuggestions = async (inputValue,type) => {
     if(type=="pick"){
@@ -84,6 +85,28 @@ const Home = () => {
       console.error("Error fetching fare:", error);
     }
   }
+  const setRideFunc= async()=>{
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
+  
+    try {
+      const response = await axios.post(`http://localhost:4000/ride/create`, {
+        origin: pick,
+        destination: drop,
+        vehicleType: vehicleType
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log(response)
+    } catch (error) {
+      console.error("Error fetching fare:", error);
+    }
+  }
 
   const logout = () => {
     navigate('/user/logout')
@@ -124,7 +147,7 @@ const Home = () => {
   useGSAP(() => {
     if (ridePanel) {
       gsap.to(rideRef.current, {
-        height: '85%',
+        height: '100%',
         opacity: 1
       })
 
@@ -198,10 +221,10 @@ const Home = () => {
         </div>
       </div>
       <div ref={vehiclePanelRef} className='p-5 h-0 fixed z-10 bottom-0 bg-white overflow-hidden' >
-        <VehiclePanel fareData={fareData}  setRidePanel={setRidePanel} setVehiclePanel={setVehiclePanel}></VehiclePanel>
+        <VehiclePanel setvehicleType={setvehicleType} fareData={fareData}  setRidePanel={setRidePanel} setVehiclePanel={setVehiclePanel}></VehiclePanel>
       </div>
       <div ref={rideRef} className='p-5 h-0 fixed z-10 bottom-0 bg-white overflow-hidden' >
-        <ConfirmRide setCapWait={setCapWait} setRidePanel={setRidePanel} ></ConfirmRide>
+        <ConfirmRide pick={pick} drop={drop} fareData={fareData} vehicleType={vehicleType} setRideFunc={setRideFunc} setCapWait={setCapWait} setRidePanel={setRidePanel} ></ConfirmRide>
       </div>
       <div ref={capWaitRef} className='p-5 h-0 fixed z-10 bottom-0 bg-white overflow-hidden' >
         <CaptainWaiting setRidePanel={setRidePanel} setCapWait={setCapWait} ></CaptainWaiting>
