@@ -12,6 +12,8 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { setDropINput } from '../store/map';
 import { setPickInput } from '../store/map';
+import { useEffect } from 'react';
+import { useSocket } from '../context/SocketIoContext';
 const Home = () => {
 
   const dispatch=useDispatch();
@@ -32,6 +34,18 @@ const Home = () => {
   const [suggestion, setSuggestion] = useState([])
   const [fareData, setfareData] = useState({})
   const [vehicleType, setvehicleType] = useState('')
+  const {newSocket} = useSocket();
+  useEffect(() => {
+    console.log("socketinuseeffect", newSocket)
+    console.log('the useeffect is running')
+    const user_id = localStorage.getItem('user_id');
+    if (user_id) {
+      newSocket.emit('join', { userId: user_id, userType: 'user' });
+    }else{
+      alert('No user id found')
+      navigate('/user/login')
+    }
+  }, [newSocket])
 
   const setPickUpSuggestions = async (inputValue,type) => {
     if(type=="pick"){

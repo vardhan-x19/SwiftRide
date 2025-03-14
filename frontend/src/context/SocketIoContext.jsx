@@ -10,9 +10,9 @@ export const useSocket = () => {
 export const SocketIoProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
-
+  const newSocket = io('http://localhost:4000'); // Ensure this URL is correct and the server is 
   useEffect(() => {
-    const newSocket = io('http://localhost:4000'); // Ensure this URL is correct and the server is running
+ 
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
@@ -28,20 +28,10 @@ export const SocketIoProvider = ({ children }) => {
     return () => newSocket.close();
   }, []);
 
-  const sendMessage = (eventName, message) => {
-    if (socket) {
-      socket.emit(eventName, message);
-    }
-  };
-
-  const receiveMessage = (eventName, callback) => {
-    if (socket) {
-      socket.on(eventName, callback);
-    }
-  };
+ 
 
   return (
-    <SocketIoContext.Provider value={{ connected, sendMessage, receiveMessage }}>
+    <SocketIoContext.Provider value={{ connected,newSocket}}>
       {children}
     </SocketIoContext.Provider>
   );

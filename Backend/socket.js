@@ -15,9 +15,10 @@ const initializeSocket = (server) => {
     console.log('New client connected:', socket.id);
     socket.on('join', async (data) => {
       const { userId, userType } = data;
-      if (data.type === 'user') {
+      console.log('User joined:', userId, userType);
+      if (userType === 'user') {
         await userModel.findByIdAndUpdate(userId, { socketId: socket.id });
-      } else if (data.type === 'captain') {
+      } else if (userType === 'captain') {
         await captainModel.findByIdAndUpdate(userId, { socketId: socket.id });
       }
     });
