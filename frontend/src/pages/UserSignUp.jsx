@@ -35,6 +35,7 @@ const UserSignUp = () => {
       console.log(response.data);
       dispatch(setUser(response.data));
       localStorage.setItem('token',response.data.token);
+      localStorage.setItem('user_id',response.data.user._id);
       navigate('/home')
     } catch (error) {
       console.log(error)

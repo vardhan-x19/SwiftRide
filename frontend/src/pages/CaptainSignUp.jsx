@@ -42,6 +42,7 @@ const CaptainSignUp = () => {
       axios.post(`http://localhost:4000/captains/register`,inputData).then((response)=>{
         console.log(response.data);
         localStorage.setItem('captain-token',response.data.token);
+        localStorage.setItem('captain_id',response.data.captain._id);
         navigate('/captain-home');  
       }).catch((err)=>{
         console.log(err);

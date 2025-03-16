@@ -60,7 +60,7 @@ const captainSchema=mongoose.Schema({
     }
   },
   location:{
-    lat:{
+    ltd:{
       type:Number,
     },
     lng:{

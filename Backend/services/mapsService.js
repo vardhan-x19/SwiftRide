@@ -1,7 +1,9 @@
 const axios = require('axios');
 const dotenv=require('dotenv');
+const captainModel = require('../Models/captainModel');
 dotenv.config();
 module.exports.getAddress = async (address) => {
+  console.log(address);
   try {
     const apiKey = process.env.GOOGLE_MAP_KEY;
     const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
@@ -14,7 +16,7 @@ module.exports.getAddress = async (address) => {
     if (response.data.status === 'OK') {
       const location = response.data.results[0].geometry.location;
       return {
-        lat: location.lat,
+        ltd: location.lat,
         lng: location.lng
       };
     } else {
@@ -83,5 +85,24 @@ module.exports.getSuggestions = async (input) => {
   } catch (error) {
     console.error(error);
     throw new Error('Error fetching suggestions');
+  }
+}
+
+module.exports.getCaptainsInRadius = async (ltd, lng, radius) => {
+  console.log(ltd, lng, radius);
+  try {
+    const captains = await captainModel.find({
+      location: {
+        $geoWithin: {
+          $centerSphere: [[ltd, lng], radius / 6371]
+        }
+      },
+      status: 'active'
+    });
+
+    return captains;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error fetching captains');
   }
 }

@@ -7,20 +7,49 @@ import { useGSAP } from '@gsap/react'
 import { useState } from 'react'
 import gsap from 'gsap';
 import ConfirmRidePopUp from '../Components/ConfirmRidePopUp'
-
+import  {useSocket} from '../context/SocketIoContext';
 const CaptainHome = () => {
   const navigate=useNavigate();
   const [ridePopupPanel, setRidePopupPanel] = useState(false)
   const ridePopupPanelRef=useRef(null);
   const [ConfirmRidePopupPanel, setConfirmRidePopupPanel] = useState(false)
   const confirmPopUpRideRef=useRef(null);
-
+  const {newSocket} = useSocket();
   useEffect(() => {
-    setTimeout(()=>{
-        setRidePopupPanel(true);
-    },4000)
+    const captain_id = localStorage.getItem('captain_id');
+    if (captain_id) {
+      newSocket.emit('join', { userId: captain_id, userType: 'captain' });
+    }else{
+      alert('No captain id found')
+      navigate('/captainlogin')
+    }
+    // setTimeout(()=>{
+    //     setRidePopupPanel(true);
+    // },4000)
+
+    const updateLocation = () => {
+      console.log('Updating location...');
+      if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
+        console.log({ 
+          captainId: captain_id, ltd: latitude, lng:longitude })
+       
+        newSocket.emit('update-captain-location', { 
+          captainId: captain_id, ltd: latitude, lng:longitude });
+      });
+      }
+    };
+
+    // const locationInterval = setInterval(updateLocation, 5000);
+    updateLocation();
+
+    // return () => clearInterval(locationInterval);
   }, [])
   
+  newSocket.on('new-ride', (data) => {
+    console.log('New ride:', data);
+  });
 
   useGSAP(function () {
     if (ridePopupPanel) {
